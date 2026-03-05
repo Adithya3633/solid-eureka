@@ -1,161 +1,183 @@
-# 🎯 AI-Powered Interview Prep System
+🎯 AI-Powered Interview Prep System
+A full-stack AI-driven interview preparation platform featuring JWT authentication, real-time analytics, competitive leaderboards, and comprehensive PDF performance reports.
 
-> Full-stack interview prep with JWT auth, analytics, PDF reports.
->
-> **Stack:** React + Vite (Frontend) → Spring Boot + MySQL (Backend) → Flask + Gemini (AI)
-
----
-
-## 🏗️ Project Structure
-
-```
+🚀 Tech Stack
+Layer	Technology	Port
+Frontend	React + Vite	5173
+Backend	Spring Boot + MySQL	8080
+AI Service	Flask + Google Gemini	5000
+Authentication	JWT	-
+Code Execution	JDoodle API (Optional)	-
+🏗️ System Architecture
+┌─────────────────────┐
+│  React + Vite       │
+│  (Port 5173)        │
+└──────────┬──────────┘
+           │
+           ↓
+┌─────────────────────┐
+│  Spring Boot        │
+│  (Port 8080)        │
+└──────────┬──────────┘
+           │
+           ↓
+┌─────────────────────┐
+│  Flask AI Service   │
+│  (Port 5000)        │
+└──────────┬──────────┘
+           │
+           ↓
+┌─────────────────────┐
+│  Google Gemini API  │
+│  + JDoodle (Optional)
+└─────────────────────┘
+📂 Project Structure
 AI_Interview_Prep/
-├── frontend/                    ← React + Vite UI (port 5173)
-│   ├── src/
-│   │   ├── pages/               ← Login, Dashboard, Interview, etc.
-│   │   ├── components/          ← Navbar
-│   │   └── services/api.js      ← Calls backend at /api via Vite proxy
-│   ├── package.json
-│   └── vite.config.js           ← Proxies /api → http://localhost:8080
-│
-├── interview-service/           ← Spring Boot (port 8080)
-│   ├── pom.xml
-│   └── src/main/
-│       ├── java/com/interviewprep/interviewservice/
-│       │   ├── InterviewServiceApplication.java
-│       │   ├── config/          ← Security, Password, App config
-│       │   ├── controller/      ← Auth, Session, Dashboard, Report, etc.
-│       │   ├── dto/             ← Request/response DTOs
-│       │   ├── entity/          ← JPA entities
-│       │   ├── enums/           ← Roles, Question types
-│       │   ├── repository/      ← Spring Data repositories
-│       │   └── service/         ← Domain services (AI client, scoring)
-│       └── resources/application.properties
-│
-└── ai-service/                  ← Flask AI (port 5000)
-    ├── app.py                   ← Registers blueprints, CORS, rate limits
-    ├── routes/                  ← subjective, mcq, coding, analytics
-    ├── services/ollama_service.py  ← Gemini-backed LLM calls
-    ├── config.py                ← Env-based config (Gemini)
-    └── requirements.txt
-```
-
----
-
-## 🚀 How to Run (Full Stack)
-
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- Java 17, Maven
-- MySQL 8+ running locally
-- Google Gemini API key (for AI generation)
-- Optional: JDoodle client id/secret (if enabling code execution)
-
-### Step 1 – Configure environment
-- ai-service/.env (create):
-  - GEMINI_API_KEY=your_key
-  - MODEL_NAME=gemini-2.5-flash
-  - RATE_AI_GENERATE=10 per minute
-  - RATE_CODE_EXEC=30 per minute
-  - JD_CLIENT_ID=your_jdoodle_id
-  - JD_CLIENT_SECRET=your_jdoodle_secret
-- interview-service application.properties or environment:
-  - DB_USER, DB_PASS
-  - FLASK_URL=http://localhost:5000
-  - JWT_SECRET, JWT_EXPIRY_MS
-
-### Step 2 – Start Flask AI Service
-```bash
+├── frontend/              # React + Vite Application (Port 5173)
+├── interview-service/     # Spring Boot Backend (Port 8080)
+└── ai-service/            # Flask AI Service (Port 5000)
+✨ Core Features
+✅ JWT Authentication - Secure register/login system
+✅ Role-Based Interviews - Customized content for different roles
+✅ Multiple Question Types - Subjective, MCQ, and Coding challenges
+✅ AI-Powered Evaluation - Instant feedback with confidence scoring
+✅ Performance Analytics - Track progress over time
+✅ Competitive Leaderboard - Rank against other users
+✅ PDF Reports - Exportable performance summaries
+✅ Rate Limiting - Protect AI and code execution resources
+✅ Admin Dashboard - Comprehensive analytics panel
+🎭 Supported Professional Roles
+💻 Java Developer
+🐍 Python Developer
+⚙️ C/C++ Developer
+🔧 DevOps Engineer
+🧪 QA Engineer
+📊 Data Analyst
+🌐 Web Developer
+🔌 API Endpoints
+🔹 AI Service (Flask – Port 5000)
+Method	Endpoint	Purpose
+GET	/health	Service health check
+POST	/generate-subjective	Generate subjective questions
+POST	/evaluate-subjective	AI evaluation of answers
+POST	/generate-mcq	Generate multiple choice questions
+POST	/evaluate-mcq	MCQ auto-grading
+POST	/generate-coding	Generate coding problems
+POST	/execute-code	Run user code (via JDoodle)
+POST	/generate-performance-summary	Create performance metrics
+🔹 Backend (Spring Boot – Port 8080)
+Endpoint	Purpose
+/api/auth/*	Authentication (login, register, token refresh)
+/api/session/*	Interview session management
+/api/dashboard/*	User dashboard data
+/api/profile/*	User profile management
+/api/leaderboard	Global rankings
+/api/report/{email}	Generate PDF performance report
+🗄️ Database Configuration
+Type: MySQL
+Default URL: jdbc:mysql://localhost:3306/interviewdb
+Auto Schema: Spring Data JPA handles schema updates
+spring.jpa.hibernate.ddl-auto=update
+⚙️ Installation & Setup
+1️⃣ Start AI Service (Flask)
 cd ai-service
 pip install -r requirements.txt
 python app.py
-# http://localhost:5000
-```
-
-### Step 3 – Start Spring Boot Backend
-```bash
+Runs on: http://localhost:5000
+2️⃣ Start Backend (Spring Boot)
 cd interview-service
 mvn spring-boot:run
-# http://localhost:8080
-```
-
-### Step 4 – Start Frontend (Vite)
-```bash
+Runs on: http://localhost:8080
+3️⃣ Start Frontend (React + Vite)
 cd frontend
 npm install
 npm run dev
-# http://localhost:5173  (proxied /api → http://localhost:8080)
-```
+Runs on: http://localhost:5173
+🔑 Environment Configuration
+AI Service - .env
+# Gemini API Configuration
+GEMINI_API_KEY=your_key_here
+MODEL_NAME=gemini-2.5-flash
 
----
+# Rate Limiting
+RATE_AI_GENERATE=10 per minute
+RATE_CODE_EXEC=30 per minute
 
-## 🧪 API Endpoints
+# JDoodle API (Optional - for code execution)
+JD_CLIENT_ID=your_id_here
+JD_CLIENT_SECRET=your_secret_here
+Backend - application.properties
+# Database Configuration
+spring.datasource.username=your_user
+spring.datasource.password=your_pass
+spring.datasource.url=jdbc:mysql://localhost:3306/interviewdb
 
-### Flask AI Service (port 5000)
-- GET `/health` – Health check
-- POST `/generate-subjective` – Generate subjective questions
-- POST `/evaluate-subjective` – Evaluate an answer
-- POST `/generate-mcq` – Generate MCQs
-- POST `/evaluate-mcq` – Evaluate MCQ answers
-- POST `/generate-coding` – Generate coding problems (optional)
-- POST `/execute-code` – Execute code via JDoodle (optional)
-- POST `/generate-performance-summary` – Summarize performance
+# AI Service Integration
+FLASK_URL=http://localhost:5000
 
-### Spring Boot (port 8080)
-- GET `/api/interview/health` – Health check
-- Auth: POST `/api/auth/register`, POST `/api/auth/login`, GET `/api/auth/validate`
-- Sessions:
-  - POST `/api/session/start`
-  - GET `/api/session/{id}/questions`
-  - POST `/api/session/submit-answer`
-  - POST `/api/session/complete/{id}`
-  - POST `/api/session/{id}/followup`
-  - POST `/api/session/{sid}/questions/{qid}/model-answer`
-- Dashboard:
-  - GET `/api/dashboard/{email}`
-  - GET `/api/dashboard/{email}/recommend/{role}`
-  - GET `/api/dashboard/{email}/wtopics/{sid}`
-  - POST `/api/dashboard/{email}/summary`
-- Skill Profile:
-  - GET `/api/profile/{email}/{role}`
-  - GET `/api/profile/{email}`
-- Leaderboard:
-  - GET `/api/leaderboard`
-  - GET `/api/leaderboard/{role}`
-- Reports:
-  - GET `/api/report/{email}` → PDF download
-- Admin:
-  - GET `/api/admin/users`
-  - GET `/api/admin/analytics`
+# JWT Configuration
+JWT_SECRET=your_secret_key_here
+JWT_EXPIRY_MS=86400000  # 24 hours
+📊 User Journey Flow
+                                                    User Registration/Login
+                                                              ↓
+                                             Authentication (JWT Token Generated)
+                                                              ↓
+                                                   Select Professional Role
+                                                              ↓
+                                                   Start Interview Session
+                                                              ↓
+                                         Backend → Requests AI Generation (Flask)
+                                                              ↓
+                                                  Flask → Calls Gemini API
+                                                              ↓
+                                                  Display Questions to User
+                                                              ↓
+                                                        Submit Answers
+                                                              ↓
+                                                   AI Evaluation & Scoring
+                                                              ↓
+                                                    Store Results in MySQL
+                                                              ↓
+                                                 Update Dashboard & Leaderboard
+                                                              ↓
+                                                Generate PDF Report (Optional)
+📸 Screenshots
+Authentication
+Login	Register
+Login	Register
+Interview Interface
+Dashboard	Start Interview	Subjective Test
+Dashboard	Start	Subjective
+Results & Evaluation
+Subjective Results	MCQ Interview	MCQ Evaluation
+Results	MCQ	Evaluation
+Full Mock Test
+Full Mock Test	Mock Results
+Full Mock	Results
+🎥 Demo Video
+📹 Watch the full system in action:
+View Demo on Google Drive
 
-### Sample Generate Request (AI service)
-```json
-{
-  "role": "Java Developer",
-  "level": "medium"
-}
-```
+🔐 Security Features
+JWT Token-Based Authentication - Stateless, scalable security
+Rate Limiting - Prevents API abuse and resource exhaustion
+Role-Based Access Control - Different permissions for users/admins
+Secure Password Storage - Spring Security with encryption
+CORS Configuration - Controlled cross-origin access
+📈 Performance Metrics
+The system tracks:
 
----
+✓ Accuracy scores
+✓ Time spent per question
+✓ Confidence levels
+✓ Progress over multiple attempts
+✓ Comparative rankings
+✓ Subject-wise performance breakdown
+🚀 Deployment Ready
+This architecture is designed for:
 
-## 🎭 Supported Roles
-
-- Java Developer, Python Developer, C/C++, DevOps, QA, Data Analyst, Web Developer
-- Subjective and MCQ generation supported across roles
-- Coding generation/execution optional (requires JDoodle credentials)
-
----
-
-## 🔁 System Flow
-
-```
-Frontend (Vite :5173) → Backend (Spring Boot :8080) → AI Service (Flask :5000) → Gemini
-```
-
----
-
-## 🗄️ Database
-- MySQL JDBC: `jdbc:mysql://localhost:3306/interviewdb`
-- Configure credentials via environment variables `DB_USER`, `DB_PASS`
-- Tables auto-created/updated via `spring.jpa.hibernate.ddl-auto=update`
+Scalability - Microservices separation
+Reliability - Rate limiting and error handling
+Maintainability - Clean separation of concerns
+Cloud Compatibility - Can be deployed on AWS, Azure, GCP
